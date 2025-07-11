@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createPublicClient, createWalletClient, http } from "viem";
+import { createPublicClient, createWalletClient, http, parseEther } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { chilizSpicyTestnet } from "@/lib/chiliz";
 import tokenFactoryAbi from "@root/contracts/abi/TokenFactory.json";
@@ -40,7 +40,12 @@ export async function POST(request: Request) {
       address: factoryAddress,
       abi: tokenFactoryAbi.abi,
       functionName: "createToken",
-      args: [tokenName, tokenSymbol, BigInt(totalSupply), userAddress],
+      args: [
+        tokenName,
+        tokenSymbol,
+        parseEther(totalSupply.toString()),
+        userAddress,
+      ],
       account: operatorAccount,
     });
 

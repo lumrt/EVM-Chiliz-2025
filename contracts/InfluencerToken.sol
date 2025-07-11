@@ -11,6 +11,6 @@ contract InfluencerToken is ERC20, Ownable {
         uint256 initialSupply,
         address initialOwner
     ) ERC20(name, symbol) Ownable(initialOwner) {
-        _mint(initialOwner, initialSupply * (10 ** decimals()));
+        _mint(initialOwner, initialSupply);
     }
 } 

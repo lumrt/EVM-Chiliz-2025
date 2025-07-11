@@ -60,6 +60,12 @@ Follow these instructions to get the project up and running on your local machin
     pnpm hardhat run scripts/deploy-factory.ts --network chilizSpicy
     ```
 
+    To get only the address and make it easy to copy, you can pipe the output to `grep`:
+
+    ```bash
+    pnpm hardhat run scripts/deploy-factory.ts --network chilizSpicy | grep "TokenFactory deployed to:"
+    ```
+
 3.  **Update your environment file:**
     After the script succeeds, it will print a contract address to the console. Copy this address and paste it into your `.env.local` file for the `NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS` variable.
 
