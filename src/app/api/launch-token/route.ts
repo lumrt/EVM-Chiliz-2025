@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createPublicClient, createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { chilizSpicyTestnet } from "@/lib/chiliz";
-import tokenFactoryAbi from "@/contracts/abi/TokenFactory.json";
+import tokenFactoryAbi from "@root/contracts/abi/TokenFactory.json";
 
 export async function POST(request: Request) {
   try {
@@ -10,7 +10,11 @@ export async function POST(request: Request) {
       await request.json();
     const factoryAddress =
       process.env.NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS! as `0x${string}`;
-    const operatorPrivateKey = process.env.OPERATOR_PRIVATE_KEY! as `0x${string}`;
+    let operatorPrivateKey = process.env.OPERATOR_PRIVATE_KEY!;
+
+    if (!operatorPrivateKey.startsWith('0x')) {
+      operatorPrivateKey = `0x${operatorPrivateKey}`;
+    }
 
     if (!tokenName || !tokenSymbol || !totalSupply || !userAddress) {
       return NextResponse.json(
@@ -19,7 +23,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const operatorAccount = privateKeyToAccount(operatorPrivateKey);
+    const operatorAccount = privateKeyToAccount(operatorPrivateKey as `0x${string}`);
 
     const walletClient = createWalletClient({
       account: operatorAccount,

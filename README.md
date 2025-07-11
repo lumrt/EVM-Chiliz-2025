@@ -42,11 +42,11 @@ Follow these instructions to get the project up and running on your local machin
     # Get this from your Privy dashboard
     NEXT_PUBLIC_PRIVY_APP_ID="discord"
 
-    # A private key from a test wallet you control (without the 0x prefix)
-    OPERATOR_PRIVATE_KEY="discord"
+    # A private key from a test wallet you control (must start with 0x)
+    OPERATOR_PRIVATE_KEY="YOUR_TEST_WALLET_PRIVATE_KEY"
 
     # This will be filled in after deploying the contract
-    NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS="0xa69F306A78E7c611620e8781bE488FC6E06C0892"
+    NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS="0x340653DD1fe8BcBfE518c544b9a83bCB2d600AD5"
     ```
 
 ### 3. Deploy the Smart Contract

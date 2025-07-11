@@ -89,7 +89,7 @@ export default function DashboardPage() {
           <div>
             <label
               htmlFor="tokenName"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-900"
             >
               Token Name
             </label>
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           <div>
             <label
               htmlFor="tokenSymbol"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-900"
             >
               Token Symbol
             </label>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
           <div>
             <label
               htmlFor="totalSupply"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-900"
             >
               Total Supply
             </label>
