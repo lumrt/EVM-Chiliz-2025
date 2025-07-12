@@ -27,7 +27,9 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "hardhat": "^2.25.0",
+    "prisma": "^6.11.1",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
