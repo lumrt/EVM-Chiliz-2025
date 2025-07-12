@@ -2,6 +2,7 @@
 
 import { PrivyProvider } from "@privy-io/react-auth";
 import { chilizSpicyTestnet } from "@/lib/chiliz";
+import { ToastProvider } from "@/components/Toast";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -24,7 +25,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         },
       }}
     >
-      {children}
+      <ToastProvider>
+        {children}
+      </ToastProvider>
     </PrivyProvider>
   );
 } 
