@@ -17,7 +17,7 @@ interface ProfileData {
 }
 
 export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalProps) {
-  const { user } = usePrivy();
+  const { user, logout } = usePrivy();
   const [formData, setFormData] = useState<ProfileData>({
     username: "",
     displayName: "",
@@ -165,12 +165,24 @@ export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalP
               </div>
             </div>
 
-            {/* Wallet connecté */}
+            {/* Informations de connexion */}
             <div className="bg-gray-50 p-3 rounded-md">
-              <p className="text-sm font-medium text-gray-700">Wallet connecté</p>
-              <p className="text-sm text-gray-500 truncate">
-                {user?.wallet?.address}
-              </p>
+              {user?.wallet?.address && (
+                <div className="mb-2 last:mb-0">
+                  <p className="text-sm font-medium text-gray-700">Wallet connecté</p>
+                  <p className="text-sm text-gray-500 truncate">
+                    {user.wallet.address}
+                  </p>
+                </div>
+              )}
+              {user?.email?.address && (
+                <div className="mb-2 last:mb-0">
+                  <p className="text-sm font-medium text-gray-700">Email connecté</p>
+                  <p className="text-sm text-gray-500 truncate">
+                    {user.email.address}
+                  </p>
+                </div>
+              )}
             </div>
 
             <button
@@ -179,6 +191,15 @@ export default function OnboardingModal({ isOpen, onComplete }: OnboardingModalP
               className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Création du profil..." : "Créer mon profil"}
+            </button>
+
+            {/* Bouton de déconnexion */}
+            <button
+              type="button"
+              onClick={logout}
+              className="w-full text-gray-500 hover:text-gray-700 py-2 text-sm underline-offset-4 hover:underline focus:outline-none focus:underline transition-colors"
+            >
+              Se déconnecter du wallet
             </button>
           </form>
         </div>

@@ -42,9 +42,9 @@ export async function POST(request: NextRequest) {
     const { email, wallet, username, displayName, bio, profilePicture } = body;
 
     // Validation des champs requis
-    if (!email || !wallet || !username || !displayName) {
+    if (!wallet || !username || !displayName) {
       return NextResponse.json(
-        { message: "Email, wallet, username et displayName sont requis" },
+        { message: "Wallet, username et displayName sont requis" },
         { status: 400 }
       );
     }
@@ -65,13 +65,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier si l'utilisateur existe déjà
+    const whereConditions: any[] = [
+      { wallet },
+      { username },
+    ];
+    
+    // Ajouter la condition email seulement si l'email est fourni
+    if (email) {
+      whereConditions.push({ email });
+    }
+
     const existingUser = await prisma.user.findFirst({
       where: {
-        OR: [
-          { wallet },
-          { email },
-          { username },
-        ],
+        OR: whereConditions,
       },
     });
 
@@ -82,7 +88,7 @@ export async function POST(request: NextRequest) {
           { status: 409 }
         );
       }
-      if (existingUser.email === email) {
+      if (email && existingUser.email === email) {
         return NextResponse.json(
           { message: "Un utilisateur avec cet email existe déjà" },
           { status: 409 }
@@ -99,7 +105,7 @@ export async function POST(request: NextRequest) {
     // Créer le nouvel utilisateur
     const user = await prisma.user.create({
       data: {
-        email,
+        email: email || null,
         wallet,
         username,
         displayName,

@@ -66,8 +66,8 @@ export function useOnboarding() {
   };
 
   const completeOnboarding = async (profileData: ProfileData) => {
-    if (!user?.wallet?.address || !user?.email?.address) {
-      throw new Error("Informations utilisateur manquantes");
+    if (!user?.wallet?.address) {
+      throw new Error("Wallet non connecté");
     }
 
     setIsLoading(true);
@@ -78,7 +78,7 @@ export function useOnboarding() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: user.email.address,
+          email: user.email?.address || null,
           wallet: user.wallet.address,
           username: profileData.username,
           displayName: profileData.displayName,
