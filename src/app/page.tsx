@@ -1,5 +1,6 @@
 "use client";
 import { usePrivy } from "@privy-io/react-auth";
+import Link from "next/link";
 
 export default function Home() {
   const { ready, authenticated, user, login, logout } = usePrivy();
@@ -32,12 +33,12 @@ export default function Home() {
               >
                 Logout
               </button>
-              <a
+              <Link
                 href="/dashboard"
                 className="ml-4 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Go to Dashboard
-              </a>
+              </Link>
               <div className="mt-4 p-4 bg-white rounded-lg shadow">
                 <p className="text-sm font-medium text-gray-900">
                   Connected Wallet

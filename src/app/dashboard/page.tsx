@@ -3,6 +3,26 @@
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPublicClient, http, formatUnits } from "viem";
+import { chilizSpicyTestnet } from "@/lib/chiliz";
+import tokenFactoryAbi from "@root/contracts/abi/TokenFactory.json";
+import influencerTokenAbi from "@root/artifacts/contracts/InfluencerToken.sol/InfluencerToken.json";
+import { tokenBlacklist } from "@/lib/token-blacklist";
+
+const factoryAddress =
+  process.env.NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS! as `0x${string}`;
+
+const publicClient = createPublicClient({
+  chain: chilizSpicyTestnet,
+  transport: http(),
+});
+
+interface OwnedTokenInfo {
+    address: `0x${string}`;
+    name: string;
+    symbol: string;
+    balance: string;
+}
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -13,12 +33,80 @@ export default function DashboardPage() {
     contractAddress?: string;
     transactionHash?: string;
   } | null>(null);
+  const [ownedTokens, setOwnedTokens] = useState<OwnedTokenInfo[]>([]);
+  const [isLoadingTokens, setIsLoadingTokens] = useState(true);
 
   useEffect(() => {
     if (ready && !authenticated) {
       router.push("/");
     }
   }, [ready, authenticated, router]);
+
+  useEffect(() => {
+    const fetchOwnedTokens = async () => {
+        if (!user?.wallet?.address || !factoryAddress) {
+            setIsLoadingTokens(false);
+            return;
+        }
+
+        setIsLoadingTokens(true);
+        try {
+            const allDeployedTokenAddresses = (await publicClient.readContract({
+                address: factoryAddress,
+                abi: tokenFactoryAbi.abi,
+                functionName: "getDeployedTokens",
+            })) as `0x${string}`[];
+
+            const deployedTokenAddresses = allDeployedTokenAddresses.filter(
+                (address) => !tokenBlacklist.includes(address)
+            );
+
+            const tokenCheckPromises = deployedTokenAddresses.map(async (tokenAddress) => {
+                const balance = (await publicClient.readContract({
+                    address: tokenAddress,
+                    abi: influencerTokenAbi.abi,
+                    functionName: 'balanceOf',
+                    args: [user.wallet!.address as `0x${string}`],
+                })) as bigint;
+                
+                if (balance > 0) {
+                    const [name, symbol] = await Promise.all([
+                        publicClient.readContract({
+                            address: tokenAddress,
+                            abi: influencerTokenAbi.abi,
+                            functionName: 'name',
+                        }),
+                        publicClient.readContract({
+                            address: tokenAddress,
+                            abi: influencerTokenAbi.abi,
+                            functionName: 'symbol',
+                        }),
+                    ]);
+                    return {
+                        address: tokenAddress,
+                        name,
+                        symbol,
+                        balance: formatUnits(balance, 18), // assuming 18 decimals
+                    } as OwnedTokenInfo;
+                }
+                return null;
+            });
+
+            const checkedTokens = await Promise.all(tokenCheckPromises);
+            const owned = checkedTokens.filter(t => t !== null) as OwnedTokenInfo[];
+            setOwnedTokens(owned.reverse());
+        } catch (error) {
+            console.error("Failed to fetch owned tokens:", error);
+            // Optionally set an error state here to show in the UI
+        } finally {
+            setIsLoadingTokens(false);
+        }
+    };
+    
+    if (ready && authenticated) {
+        fetchOwnedTokens();
+    }
+  }, [ready, authenticated, user?.wallet?.address]);
 
   const handleLaunch = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -185,6 +273,36 @@ export default function DashboardPage() {
             )}
           </div>
         )}
+      </div>
+
+      <div className="w-full max-w-4xl mt-16">
+          <h2 className="text-2xl font-bold text-center text-gray-900 mb-6">My Tokens</h2>
+          {isLoadingTokens ? (
+              <p className="text-center text-gray-500">Loading your tokens...</p>
+          ) : ownedTokens.length > 0 ? (
+              <div className="overflow-x-auto bg-white rounded-lg shadow">
+                  <table className="min-w-full">
+                      <thead className="bg-gray-50">
+                          <tr>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                          </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200">
+                          {ownedTokens.map((token) => (
+                              <tr key={token.address}>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{token.name}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{token.symbol}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{token.balance}</td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </table>
+              </div>
+          ) : (
+              <p className="text-center text-gray-500">You do not own any influencer tokens yet.</p>
+          )}
       </div>
     </main>
   );
