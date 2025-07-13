@@ -1,0 +1,7 @@
+{
+  "network": "spicy",
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "timestamp": "2025-07-13T09:16:29.131Z",
+  "tokenFactory": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+  "swapRouter": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed"
+}

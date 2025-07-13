@@ -1,8 +1,8 @@
 import { defineChain } from "viem";
 
 export const chilizSpicyTestnet = defineChain({
-  id: 88882,
-  name: "Chiliz Spicy Testnet",
+  id: 31337, // Hardhat network chainId
+  name: "Hardhat Local Network",
   nativeCurrency: {
     decimals: 18,
     name: "Chiliz",
@@ -10,7 +10,7 @@ export const chilizSpicyTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ["https://spicy-rpc.chiliz.com/"],
+      http: ["http://localhost:8545"], // Point vers le node Hardhat local
     },
   },
   blockExplorers: {
