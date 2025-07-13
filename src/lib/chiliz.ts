@@ -17,4 +17,28 @@ export const chilizSpicyTestnet = defineChain({
     default: { name: "Explorer", url: "https://spicy-explorer.chiliz.com/" },
   },
   testnet: true,
-}); 
+});
+
+export const hardhatLocalhost = defineChain({
+  id: 31337,
+  name: "Localhost",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ether",
+    symbol: "ETH",
+  },
+  rpcUrls: {
+    default: {
+      http: ["http://127.0.0.1:8545"],
+    },
+  },
+  testnet: true,
+});
+
+export const getActiveChain = () => {
+  const network = process.env.NEXT_PUBLIC_NETWORK;
+  if (network === 'localhost') {
+    return hardhatLocalhost;
+  }
+  return chilizSpicyTestnet;
+} 

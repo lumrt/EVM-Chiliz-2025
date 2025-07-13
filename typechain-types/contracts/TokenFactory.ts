@@ -25,53 +25,53 @@ import type {
 
 export interface TokenFactoryInterface extends Interface {
   getFunction(
-    nameOrSignature: "createToken" | "deployedTokens" | "getDeployedTokens"
+    nameOrSignature:
+      | "createNFT"
+      | "deployedNFTCollections"
+      | "getDeployedNFTCollections"
   ): FunctionFragment;
 
-  getEvent(nameOrSignatureOrTopic: "TokenCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NFTCollectionCreated"): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "createToken",
-    values: [string, string, BigNumberish, AddressLike]
+    functionFragment: "createNFT",
+    values: [string, string, AddressLike, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "deployedTokens",
+    functionFragment: "deployedNFTCollections",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getDeployedTokens",
+    functionFragment: "getDeployedNFTCollections",
     values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "createNFT", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "createToken",
+    functionFragment: "deployedNFTCollections",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "deployedTokens",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getDeployedTokens",
+    functionFragment: "getDeployedNFTCollections",
     data: BytesLike
   ): Result;
 }
 
-export namespace TokenCreatedEvent {
+export namespace NFTCollectionCreatedEvent {
   export type InputTuple = [
-    tokenAddress: AddressLike,
+    nftAddress: AddressLike,
     owner: AddressLike,
     name: string,
     symbol: string
   ];
   export type OutputTuple = [
-    tokenAddress: string,
+    nftAddress: string,
     owner: string,
     name: string,
     symbol: string
   ];
   export interface OutputObject {
-    tokenAddress: string;
+    nftAddress: string;
     owner: string;
     name: string;
     symbol: string;
@@ -125,62 +125,68 @@ export interface TokenFactory extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  createToken: TypedContractMethod<
+  createNFT: TypedContractMethod<
     [
       name: string,
       symbol: string,
-      initialSupply: BigNumberish,
-      owner: AddressLike
+      owner: AddressLike,
+      tokenURI: string,
+      quantity: BigNumberish
     ],
     [string],
     "nonpayable"
   >;
 
-  deployedTokens: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
+  deployedNFTCollections: TypedContractMethod<
+    [arg0: BigNumberish],
+    [string],
+    "view"
+  >;
 
-  getDeployedTokens: TypedContractMethod<[], [string[]], "view">;
+  getDeployedNFTCollections: TypedContractMethod<[], [string[]], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "createToken"
+    nameOrSignature: "createNFT"
   ): TypedContractMethod<
     [
       name: string,
       symbol: string,
-      initialSupply: BigNumberish,
-      owner: AddressLike
+      owner: AddressLike,
+      tokenURI: string,
+      quantity: BigNumberish
     ],
     [string],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "deployedTokens"
+    nameOrSignature: "deployedNFTCollections"
   ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
   getFunction(
-    nameOrSignature: "getDeployedTokens"
+    nameOrSignature: "getDeployedNFTCollections"
   ): TypedContractMethod<[], [string[]], "view">;
 
   getEvent(
-    key: "TokenCreated"
+    key: "NFTCollectionCreated"
   ): TypedContractEvent<
-    TokenCreatedEvent.InputTuple,
-    TokenCreatedEvent.OutputTuple,
-    TokenCreatedEvent.OutputObject
+    NFTCollectionCreatedEvent.InputTuple,
+    NFTCollectionCreatedEvent.OutputTuple,
+    NFTCollectionCreatedEvent.OutputObject
   >;
 
   filters: {
-    "TokenCreated(address,address,string,string)": TypedContractEvent<
-      TokenCreatedEvent.InputTuple,
-      TokenCreatedEvent.OutputTuple,
-      TokenCreatedEvent.OutputObject
+    "NFTCollectionCreated(address,address,string,string)": TypedContractEvent<
+      NFTCollectionCreatedEvent.InputTuple,
+      NFTCollectionCreatedEvent.OutputTuple,
+      NFTCollectionCreatedEvent.OutputObject
     >;
-    TokenCreated: TypedContractEvent<
-      TokenCreatedEvent.InputTuple,
-      TokenCreatedEvent.OutputTuple,
-      TokenCreatedEvent.OutputObject
+    NFTCollectionCreated: TypedContractEvent<
+      NFTCollectionCreatedEvent.InputTuple,
+      NFTCollectionCreatedEvent.OutputTuple,
+      NFTCollectionCreatedEvent.OutputObject
     >;
   };
 }

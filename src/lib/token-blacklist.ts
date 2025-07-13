@@ -1,9 +1,7 @@
-// This file contains the list of token addresses to be hidden from the explorer.
-// Add the addresses of the tokens you want to blacklist here.
-// For example: export const tokenBlacklist: `0x${string}`[] = ['0x123...', '0x456...'];
+// This is a list of NFT Collection addresses that should be hidden from the UI.
+// This is a temporary solution for demo purposes.
+// In a real application, this would be managed via a database or a more robust system.
 
-export const tokenBlacklist: `0x${string}`[] = [
-    '0xC4016b791Fe41C1f66d31be2B55704DA834c9C6d',
-    '0x2706DebA5d6720525270E18FB3c8324e4426f08A',
-    '0x1fD8721420e298711733Fb2f09cfee6Bc050af0D'
+export const tokenBlacklist: string[] = [
+    "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be"
 ]; 

@@ -1,36 +1,38 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "./InfluencerToken.sol";
+import "./InfluencerNFT.sol";
 
 contract TokenFactory {
-    address[] public deployedTokens;
+    address[] public deployedNFTCollections;
 
-    event TokenCreated(
-        address indexed tokenAddress,
+    event NFTCollectionCreated(
+        address indexed nftAddress,
         address indexed owner,
         string name,
         string symbol
     );
 
-    function createToken(
+    function createNFT(
         string memory name,
         string memory symbol,
-        uint256 initialSupply,
-        address owner
+        address owner,
+        string memory tokenURI,
+        uint256 quantity
     ) public returns (address) {
-        InfluencerToken newToken = new InfluencerToken(
+        InfluencerNFT newNFT = new InfluencerNFT(
             name,
             symbol,
-            initialSupply,
-            owner
+            owner,
+            tokenURI,
+            quantity
         );
-        deployedTokens.push(address(newToken));
-        emit TokenCreated(address(newToken), owner, name, symbol);
-        return address(newToken);
+        deployedNFTCollections.push(address(newNFT));
+        emit NFTCollectionCreated(address(newNFT), owner, name, symbol);
+        return address(newNFT);
     }
 
-    function getDeployedTokens() public view returns (address[] memory) {
-        return deployedTokens;
+    function getDeployedNFTCollections() public view returns (address[] memory) {
+        return deployedNFTCollections;
     }
 } 

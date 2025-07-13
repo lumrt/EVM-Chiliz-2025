@@ -1,7 +1,6 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
-import { chilizSpicyTestnet } from "@/lib/chiliz";
 import { ToastProvider } from "@/components/Toast";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -9,25 +8,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
       config={{
-        // Add Chiliz Spicy Testnet to the list of supported chains
-        supportedChains: [chilizSpicyTestnet],
-        // Set Chiliz Spicy Testnet as the default chain
-        defaultChain: chilizSpicyTestnet,
-        // Customize Privy's appearance in your app
+        loginMethods: ["email", "wallet"],
         appearance: {
           theme: "light",
           accentColor: "#676FFF",
-          logo: "https://your-logo-url",
+          logo: "/fandom.png",
         },
-        // Create embedded wallets for users who don't have a wallet
         embeddedWallets: {
           createOnLogin: "users-without-wallets",
         },
       }}
     >
-      <ToastProvider>
-        {children}
-      </ToastProvider>
+      <ToastProvider>{children}</ToastProvider>
     </PrivyProvider>
   );
-} 
+}

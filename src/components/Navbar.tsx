@@ -18,6 +18,9 @@ export default function Navbar() {
               <Link href="/explorer" className="text-gray-200 hover:bg-[#CD022D] hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                 Explorer
               </Link>
+              <Link href="/marketplace" className="text-gray-200 hover:bg-[#CD022D] hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                Marketplace
+              </Link>
             </div>
           </div>
         </div>
