@@ -1,12 +1,18 @@
 "use client";
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Users, Gift, Clock, TrendingUp, Info, Coins } from "lucide-react";
+import { ArrowLeft, Users, Gift, Clock, TrendingUp, Info, Coins, Wallet, Plus } from "lucide-react";
 import Link from "next/link";
 
 interface Token {
@@ -146,6 +152,65 @@ export default function StakingPage() {
     return "10.0";
   };
 
+  // Add Chiliz network to wallet
+  const addChilizNetwork = async () => {
+    if (!window.ethereum) {
+      alert("Please install MetaMask or another Web3 wallet");
+      return;
+    }
+
+    try {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+          chainId: '0x15b32', // 88882 in hex
+          chainName: 'Chiliz Spicy Testnet',
+          nativeCurrency: {
+            name: 'CHZ',
+            symbol: 'CHZ',
+            decimals: 18,
+          },
+          rpcUrls: ['https://spicy-rpc.chiliz.com'],
+          blockExplorerUrls: ['https://spicy-explorer.chiliz.com'],
+        }],
+      });
+      alert("Chiliz network added successfully!");
+    } catch (error) {
+      console.error("Error adding network:", error);
+      alert("Failed to add network");
+    }
+  };
+
+  // Fund wallet with 10 tokens
+  const fundWallet = async () => {
+    if (!selectedToken || !user?.wallet?.address) {
+      alert("Please select a token and connect wallet");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/fund-wallet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tokenAddress: selectedToken.address,
+          recipientAddress: user.wallet.address,
+          amount: "10",
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(`Successfully funded! ${data.amount} ${selectedToken.symbol} sent to your wallet`);
+      } else {
+        alert(`Funding failed: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Funding error:", error);
+      alert("Funding failed");
+    }
+  };
+
   if (!ready || !authenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-chiliz-dark via-gray-900 to-black text-white flex items-center justify-center">
@@ -225,6 +290,36 @@ export default function StakingPage() {
                   </button>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Actions */}
+          <Card className="bg-gray-900/50 border-gray-800 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Wallet className="h-5 w-5 mr-2 text-chiliz-primary" />
+                Quick Setup
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button 
+                onClick={addChilizNetwork}
+                className="w-full bg-chiliz-primary hover:bg-chiliz-primary/90"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Chiliz Network
+              </Button>
+              
+              {selectedToken && (
+                <Button 
+                  onClick={fundWallet}
+                  variant="outline"
+                  className="w-full border-chiliz-primary text-chiliz-primary hover:bg-chiliz-primary hover:text-white"
+                >
+                  <Coins className="h-4 w-4 mr-2" />
+                  Get 10 {selectedToken.symbol}
+                </Button>
+              )}
             </CardContent>
           </Card>
 
