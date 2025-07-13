@@ -1,4 +1,28 @@
 import { NextResponse } from "next/server";
+import { createWalletClient, createPublicClient, http, parseEther } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { chilizSpicyTestnet } from "@/lib/chiliz";
+
+// ERC20 ABI for token transfers
+const ERC20_ABI = [
+  {
+    "inputs": [
+      {"name": "to", "type": "address"},
+      {"name": "amount", "type": "uint256"}
+    ],
+    "name": "transfer",
+    "outputs": [{"name": "", "type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"name": "account", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+] as const;
 
 // Hardcoded staking pool with realistic data
 const STAKING_POOL = {
@@ -7,6 +31,9 @@ const STAKING_POOL = {
   minimumStake: 10, // Minimum 10 CHZ
   stakingRewards: "15000", // 15K CHZ available as rewards
 };
+
+// Staking contract address (simulation)
+const STAKING_CONTRACT_ADDRESS = "0xa69F306A78E7c611620e8781bE488FC6E06C0892" as const;
 
 // Store for user stakes (in production, this would be in a database)
 const userStakes = new Map();
@@ -44,6 +71,50 @@ export async function POST(request: Request) {
         );
       }
 
+      let realTransactionHash = null;
+
+      try {
+        // Simulate sending 2 CZC tokens to staking contract address
+        let operatorPrivateKey = process.env.OPERATOR_PRIVATE_KEY!;
+        if (!operatorPrivateKey.startsWith('0x')) {
+          operatorPrivateKey = `0x${operatorPrivateKey}`;
+        }
+
+        const operatorAccount = privateKeyToAccount(operatorPrivateKey as `0x${string}`);
+
+        const walletClient = createWalletClient({
+          account: operatorAccount,
+          chain: chilizSpicyTestnet,
+          transport: http(),
+        });
+
+        const publicClient = createPublicClient({
+          chain: chilizSpicyTestnet,
+          transport: http(),
+        });
+
+        // Send 2 CZC tokens to staking contract to simulate staking
+        const txHash = await walletClient.writeContract({
+          address: tokenAddress as `0x${string}`,
+          abi: ERC20_ABI,
+          functionName: "transfer",
+          args: [STAKING_CONTRACT_ADDRESS, parseEther("2")], // 2 CZC tokens
+        });
+
+        // Wait for transaction confirmation
+        await publicClient.waitForTransactionReceipt({ hash: txHash });
+        realTransactionHash = txHash;
+
+        console.log(`✅ Staking simulation: Sent 2 CZC tokens to ${STAKING_CONTRACT_ADDRESS}`);
+        console.log(`📋 Transaction hash: ${txHash}`);
+        console.log(`🪙 Token address: ${tokenAddress}`);
+
+      } catch (error) {
+        console.error("❌ Failed to send staking transaction:", error);
+        console.error("Error details:", error);
+        // Continue with simulation even if real transaction fails
+      }
+
       // Get current user stake
       const currentStake = userStakes.get(userAddress) || {
         amount: 0,
@@ -59,8 +130,8 @@ export async function POST(request: Request) {
         rewards: currentStake.rewards
       });
 
-      // Simulate transaction hash
-      const stakeHash = `0x${Math.random().toString(16).substr(2, 64)}`;
+      // Use real transaction hash if available, otherwise simulate
+      const stakeHash = realTransactionHash || `0x${Math.random().toString(16).substr(2, 64)}`;
 
       return NextResponse.json({
         message: "Staking successful!",
@@ -71,6 +142,11 @@ export async function POST(request: Request) {
         totalStaked: newStakeAmount,
         apy: STAKING_POOL.apyRate,
         estimatedYearlyRewards: (newStakeAmount * STAKING_POOL.apyRate).toFixed(6),
+        realTransaction: realTransactionHash ? true : false,
+        stakingContractAddress: STAKING_CONTRACT_ADDRESS,
+        explorerUrl: `https://spicy-explorer.chiliz.com/tx/${stakeHash}`,
+        tokensSent: "2 CZC",
+        network: "Chiliz Spicy Testnet",
       });
     } else {
       // UNSTAKING OPERATION

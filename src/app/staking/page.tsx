@@ -28,6 +28,21 @@ interface StakingInfo {
   userAddress: string;
 }
 
+interface StakingResult {
+  message: string;
+  transactionHash?: string;
+  explorerUrl?: string;
+  tokensSent?: string;
+  network?: string;
+  stakingContractAddress?: string;
+  realTransaction?: boolean;
+  stakingType?: string;
+  amount?: number;
+  totalStaked?: number;
+  apy?: number;
+  estimatedYearlyRewards?: string;
+}
+
 export default function StakingPage() {
   const router = useRouter();
   const { ready, authenticated, user } = usePrivy();
@@ -37,7 +52,7 @@ export default function StakingPage() {
   const [amount, setAmount] = useState("");
   const [isStaking, setIsStaking] = useState(true);
   const [stakingInfo, setStakingInfo] = useState<StakingInfo | null>(null);
-  const [result, setResult] = useState<string | null>(null);
+  const [result, setResult] = useState<StakingResult | null>(null);
 
   useEffect(() => {
     if (ready && !authenticated) {
@@ -108,13 +123,13 @@ export default function StakingPage() {
         throw new Error(data.error || "Error during operation");
       }
 
-      setResult(data.message);
+      setResult(data);
       setAmount("");
       // Refresh staking info
       fetchStakingInfo();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      setResult(`Error: ${errorMessage}`);
+      setResult({ message: `Error: ${errorMessage}` });
     } finally {
       setIsLoading(false);
     }
@@ -335,13 +350,76 @@ export default function StakingPage() {
                 {/* Result */}
                 {result && (
                   <div className={`p-4 rounded-lg ${
-                    result.includes("Error") ? "bg-red-900/50 border border-red-500" : "bg-green-900/50 border border-green-500"
+                    result.message.includes("Error") ? "bg-red-900/50 border border-red-500" : "bg-green-900/50 border border-green-500"
                   }`}>
-                                          <p className={`text-sm ${
-                        result.includes("Error") ? "text-red-300" : "text-green-300"
-                      }`}>
-                      {result}
+                    <p className={`text-sm font-medium mb-3 ${
+                      result.message.includes("Error") ? "text-red-300" : "text-green-300"
+                    }`}>
+                      {result.message}
                     </p>
+                    
+                    {/* Transaction Details */}
+                    {result.transactionHash && !result.message.includes("Error") && (
+                      <div className="space-y-2 text-xs text-gray-300 border-t border-gray-600 pt-3">
+                        <div className="grid grid-cols-1 gap-2">
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Transaction Hash:</span>
+                            <span className="font-mono text-chiliz-primary truncate ml-2" title={result.transactionHash}>
+                              {result.transactionHash.slice(0, 10)}...{result.transactionHash.slice(-8)}
+                            </span>
+                          </div>
+                          
+                          {result.tokensSent && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Tokens Sent:</span>
+                              <span className="text-green-300">{result.tokensSent}</span>
+                            </div>
+                          )}
+                          
+                          {result.stakingContractAddress && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Staking Contract:</span>
+                              <span className="font-mono text-gray-300 truncate ml-2" title={result.stakingContractAddress}>
+                                {result.stakingContractAddress.slice(0, 6)}...{result.stakingContractAddress.slice(-4)}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {result.network && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Network:</span>
+                              <span className="text-blue-300">{result.network}</span>
+                            </div>
+                          )}
+                          
+                          {result.realTransaction !== undefined && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Transaction Type:</span>
+                              <span className={result.realTransaction ? "text-green-300" : "text-yellow-300"}>
+                                {result.realTransaction ? "Real Blockchain" : "Simulation"}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Explorer Link */}
+                        {result.explorerUrl && (
+                          <div className="mt-3 pt-2 border-t border-gray-600">
+                            <a 
+                              href={result.explorerUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center space-x-2 text-xs bg-chiliz-primary/20 hover:bg-chiliz-primary/30 text-chiliz-primary px-3 py-2 rounded-md transition-colors"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                              <span>View on Explorer</span>
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </CardContent>
