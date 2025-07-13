@@ -2,87 +2,85 @@
 
 import { useEffect, useState } from "react";
 import { createPublicClient, http } from "viem";
-import { chilizSpicyTestnet } from "@/lib/chiliz";
+import { getActiveChain } from "@/lib/chiliz";
 import tokenFactoryAbi from "@root/contracts/abi/TokenFactory.json";
-import influencerTokenAbi from "@root/artifacts/contracts/InfluencerToken.sol/InfluencerToken.json";
+import influencerNftAbi from "@root/artifacts/contracts/InfluencerNFT.sol/InfluencerNFT.json";
 import Link from "next/link";
 import { tokenBlacklist } from "@/lib/token-blacklist";
+import { formatAddress } from "@/lib/utils";
 
-const factoryAddress =
-  process.env.NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS! as `0x${string}`;
+const factoryAddress = formatAddress(process.env.NEXT_PUBLIC_TOKEN_FACTORY_ADDRESS);
 
+const activeChain = getActiveChain();
 const publicClient = createPublicClient({
-  chain: chilizSpicyTestnet,
+  chain: activeChain,
   transport: http(),
 });
 
-interface TokenInfo {
+interface NFTCollectionInfo {
   address: `0x${string}`;
   name: string;
   symbol: string;
-  totalSupply: string;
+  imageUrl?: string;
 }
 
 export default function ExplorerPage() {
-  const [tokens, setTokens] = useState<TokenInfo[]>([]);
+  const [collections, setCollections] = useState<NFTCollectionInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchTokens = async () => {
+    const fetchCollections = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const deployedTokenAddresses = (await publicClient.readContract({
-          address: factoryAddress,
+        const deployedCollectionAddresses = (await publicClient.readContract({
+          address: factoryAddress!,
           abi: tokenFactoryAbi.abi,
-          functionName: "getDeployedTokens",
+          functionName: "getDeployedNFTCollections",
         })) as `0x${string}`[];
 
-        const tokenDetailsPromises = deployedTokenAddresses.map(async (tokenAddress) => {
-            const [name, symbol, totalSupply] = await Promise.all([
-                publicClient.readContract({
-                    address: tokenAddress,
-                    abi: influencerTokenAbi.abi,
-                    functionName: 'name',
-                }),
-                publicClient.readContract({
-                    address: tokenAddress,
-                    abi: influencerTokenAbi.abi,
-                    functionName: 'symbol',
-                }),
-                publicClient.readContract({
-                    address: tokenAddress,
-                    abi: influencerTokenAbi.abi,
-                    functionName: 'totalSupply',
-                }),
-            ]);
-            return {
-                address: tokenAddress,
-                name,
-                symbol,
-                // format from wei
-                totalSupply: (Number(totalSupply as bigint) / 1e18).toLocaleString(),
-            } as TokenInfo;
+        const collectionDetailsPromises = deployedCollectionAddresses.map(async (collectionAddress) => {
+            try {
+                const [name, symbol, tokenURI] = await Promise.all([
+                    publicClient.readContract({ address: collectionAddress, abi: influencerNftAbi.abi, functionName: 'name' }),
+                    publicClient.readContract({ address: collectionAddress, abi: influencerNftAbi.abi, functionName: 'symbol' }),
+                    publicClient.readContract({ address: collectionAddress, abi: influencerNftAbi.abi, functionName: 'tokenURI', args: [0] }),
+                ]);
+
+                let imageUrl;
+                if (typeof tokenURI === 'string') {
+                    const metadataResponse = await fetch(tokenURI);
+                    if (metadataResponse.ok) {
+                        const metadata = await metadataResponse.json();
+                        imageUrl = metadata.image;
+                    }
+                }
+                
+                return { address: collectionAddress, name, symbol, imageUrl } as NFTCollectionInfo;
+            } catch (e) {
+                console.warn(`Could not fetch details for collection ${collectionAddress}. It might be an old contract or have a different interface.`);
+                return null;
+            }
         });
 
-        const tokensInfo = await Promise.all(tokenDetailsPromises);
+        const collectionsInfo = (await Promise.all(collectionDetailsPromises)).filter(c => c !== null) as NFTCollectionInfo[];
         
-        const filteredTokens = tokensInfo.filter(
-            (token) => !tokenBlacklist.includes(token.address)
+        const filteredCollections = collectionsInfo.filter(
+            (collection) => !tokenBlacklist.includes(collection.address)
         );
 
-        setTokens(filteredTokens.reverse()); // Show latest tokens first
+        setCollections(filteredCollections.reverse());
       } catch (e) {
         console.error(e);
-        setError("Failed to fetch tokens. Make sure your environment variables are set.");
+        setError("Failed to fetch collections. Make sure your environment variables are set correctly.");
       } finally {
         setIsLoading(false);
       }
     };
 
     if (factoryAddress) {
-        fetchTokens();
+        fetchCollections();
     } else {
         setError("Token factory address is not configured.");
         setIsLoading(false);
@@ -90,44 +88,41 @@ export default function ExplorerPage() {
   }, []);
 
   return (
-    <main className="flex flex-col items-center min-h-screen p-8 bg-gray-50">
-      <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
-          Token Explorer
-        </h1>
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold text-center text-gray-900 mb-12">
+        NFT Collections Explorer
+      </h1>
 
-        {isLoading && <p className="text-center">Loading tokens...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
-        
-        {!isLoading && !error && (
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
-                    <thead>
-                        <tr className="bg-gray-100">
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Supply</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        {tokens.map((token) => (
-                            <tr key={token.address}>
-                                <td className="px-6 py-4 whitespace-nowrap text-gray-900">{token.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-gray-900">{token.symbol}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-gray-900">{token.totalSupply}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <Link href={`https://spicy-explorer.chiliz.com/address/${token.address}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-900">
-                                        {token.address}
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        )}
-      </div>
+      {isLoading && <p className="text-center text-gray-500">Loading collections...</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
+      
+      {!isLoading && !error && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {collections.map((collection) => (
+                <div key={collection.address} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+                    {collection.imageUrl ? (
+                        <img src={collection.imageUrl} alt={`Image for ${collection.name}`} className="w-full h-56 object-cover" />
+                    ) : (
+                        <div className="w-full h-56 bg-gray-200 flex items-center justify-center">
+                            <p className="text-gray-500">No Image</p>
+                        </div>
+                    )}
+                    <div className="p-4">
+                        <h3 className="text-lg font-semibold text-gray-800 truncate" title={collection.name}>{collection.name}</h3>
+                        <p className="text-sm text-gray-600">{collection.symbol}</p>
+                        <div className="mt-4">
+                            <Link href={`${activeChain.blockExplorers?.default.url}/address/${collection.address}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-900 text-xs break-all">
+                                View on Explorer
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+      )}
+      {!isLoading && !error && collections.length === 0 && (
+        <p className="text-center text-gray-500">No NFT collections found.</p>
+      )}
     </main>
   );
 } 

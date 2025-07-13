@@ -41,47 +41,6 @@
         "InfluencerNFT"
       ]
     },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
-      "lastModificationDate": 1752270218708,
-      "contentHash": "9aefce4573c7ae661acf9d5d78d5450b",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../ERC721.sol",
-        "../../../utils/Strings.sol",
-        "../../../interfaces/IERC4906.sol",
-        "../../../interfaces/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC721URIStorage"
-      ]
-    },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
       "lastModificationDate": 1752270218707,
       "contentHash": "a7951c81f7037d558c6d2f220b0cb38e",
@@ -164,6 +123,85 @@
         "Ownable"
       ]
     },
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
+      "lastModificationDate": 1752270218708,
+      "contentHash": "9aefce4573c7ae661acf9d5d78d5450b",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC721.sol",
+        "../../../utils/Strings.sol",
+        "../../../interfaces/IERC4906.sol",
+        "../../../interfaces/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC721URIStorage"
+      ]
+    },
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "lastModificationDate": 1752270218720,
+      "contentHash": "1fdc621cd6747e8985e11fc76ce74511",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC721"
+      ]
+    },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
       "lastModificationDate": 1752270218725,
       "contentHash": "13dbc135f563c72a11b1cf4fbb5fb284",
@@ -202,81 +240,6 @@
       ],
       "artifacts": [
         "Strings"
-      ]
-    },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/interfaces/IERC165.sol": {
-      "lastModificationDate": 1752270218717,
-      "contentHash": "f808b485ee0cdc6768ee8385ae5f9a2a",
-      "sourceName": "@openzeppelin/contracts/interfaces/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../utils/introspection/IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": []
-    },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/interfaces/IERC4906.sol": {
-      "lastModificationDate": 1752270218719,
-      "contentHash": "273c26c9c728a6052d1175ace81d10b4",
-      "sourceName": "@openzeppelin/contracts/interfaces/IERC4906.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC165.sol",
-        "./IERC721.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC4906"
       ]
     },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/Context.sol": {
@@ -391,10 +354,10 @@
         "ERC165"
       ]
     },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-      "lastModificationDate": 1752270218720,
-      "contentHash": "1fdc621cd6747e8985e11fc76ce74511",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/utils/ERC721Utils.sol": {
+      "lastModificationDate": 1752270218709,
+      "contentHash": "e12814872b31b0af06106796a6621b04",
+      "sourceName": "@openzeppelin/contracts/token/ERC721/utils/ERC721Utils.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
@@ -420,13 +383,14 @@
         }
       },
       "imports": [
-        "../../utils/introspection/IERC165.sol"
+        "../IERC721Receiver.sol",
+        "../../../interfaces/draft-IERC6093.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "IERC721"
+        "ERC721Utils"
       ]
     },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
@@ -467,10 +431,10 @@
         "IERC721Metadata"
       ]
     },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/utils/ERC721Utils.sol": {
-      "lastModificationDate": 1752270218709,
-      "contentHash": "e12814872b31b0af06106796a6621b04",
-      "sourceName": "@openzeppelin/contracts/token/ERC721/utils/ERC721Utils.sol",
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1752270218717,
+      "contentHash": "bf0119eb2a570f219729ff38b6cd1df8",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
         "version": "0.8.24",
         "settings": {
@@ -495,15 +459,12 @@
           }
         }
       },
-      "imports": [
-        "../IERC721Receiver.sol",
-        "../../../interfaces/draft-IERC6093.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "ERC721Utils"
+        "IERC165"
       ]
     },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/math/SignedMath.sol": {
@@ -542,6 +503,42 @@
       ],
       "artifacts": [
         "SignedMath"
+      ]
+    },
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol": {
+      "lastModificationDate": 1752270218724,
+      "contentHash": "2adca1150f58fc6f3d1f0a0f22ee7cca",
+      "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "SafeCast"
       ]
     },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
@@ -583,42 +580,6 @@
         "Math"
       ]
     },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol": {
-      "lastModificationDate": 1752270218724,
-      "contentHash": "2adca1150f58fc6f3d1f0a0f22ee7cca",
-      "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "SafeCast"
-      ]
-    },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/Panic.sol": {
       "lastModificationDate": 1752270218723,
       "contentHash": "2133dc13536b4a6a98131e431fac59e1",
@@ -653,42 +614,6 @@
       ],
       "artifacts": [
         "Panic"
-      ]
-    },
-    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1752270218717,
-      "contentHash": "bf0119eb2a570f219729ff38b6cd1df8",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IERC165"
       ]
     },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
@@ -726,6 +651,81 @@
       "artifacts": [
         "IERC721Receiver"
       ]
+    },
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/interfaces/IERC4906.sol": {
+      "lastModificationDate": 1752270218719,
+      "contentHash": "273c26c9c728a6052d1175ace81d10b4",
+      "sourceName": "@openzeppelin/contracts/interfaces/IERC4906.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC165.sol",
+        "./IERC721.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC4906"
+      ]
+    },
+    "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/interfaces/IERC165.sol": {
+      "lastModificationDate": 1752270218717,
+      "contentHash": "f808b485ee0cdc6768ee8385ae5f9a2a",
+      "sourceName": "@openzeppelin/contracts/interfaces/IERC165.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/introspection/IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": []
     },
     "/Users/lucas/Desktop/EVM-Chiliz-2025/node_modules/.pnpm/@openzeppelin+contracts@5.3.0/node_modules/@openzeppelin/contracts/interfaces/IERC721.sol": {
       "lastModificationDate": 1752270218720,
