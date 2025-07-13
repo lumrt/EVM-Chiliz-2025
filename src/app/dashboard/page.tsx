@@ -116,7 +116,7 @@ export default function DashboardPage() {
               <div className="h-6 w-px bg-gray-600"></div>
               <div className="flex items-center space-x-2">
                 <Zap className="h-6 w-6 text-chiliz-primary" />
-                <h1 className="text-xl font-bold gradient-text">Chiliz Studio</h1>
+                <h1 className="text-xl font-bold gradient-text">Fandoms</h1>
               </div>
             </div>
             

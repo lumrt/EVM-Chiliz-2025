@@ -122,7 +122,7 @@ export default function TokensPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold text-white">Chiliz Memecoins</h2>
+              <h2 className="text-3xl font-bold text-white">Fandoms Fan Tokens</h2>
               <p className="text-gray-400 mt-2">
                 Discover all tokens created on our platform
               </p>

@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Chilliz Token Platform",
-  description: "Launch your own token on the Chiliz blockchain.",
+  title: "Fandoms - Token Platform",
+  description: "Launch your own token on the Chiliz blockchain with Fandoms.",
 };
 
 export default function RootLayout({

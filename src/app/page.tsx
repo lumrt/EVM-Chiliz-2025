@@ -14,10 +14,10 @@ export default function Home() {
       <nav className="border-b border-gray-800 bg-black/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <Zap className="h-8 w-8 text-chiliz-primary" />
-              <h1 className="text-2xl font-bold gradient-text">Chiliz Studio</h1>
-            </div>
+                          <div className="flex items-center space-x-2">
+                <Zap className="h-8 w-8 text-chiliz-primary" />
+                <h1 className="text-2xl font-bold gradient-text">Fandoms</h1>
+              </div>
             
             <div className="flex items-center space-x-4">
               {ready && authenticated && (
@@ -74,12 +74,12 @@ export default function Home() {
               </div>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="gradient-text">Chiliz Studio</span>
+              <span className="gradient-text">Fandoms</span>
             </h1>
             
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Transform your community into an economy. Create memecoins, 
-              offer exclusive access and generate new revenue on Chiliz.
+              offer exclusive access and generate new revenue with Fandoms.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -167,16 +167,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold gradient-text mb-2">50%</div>
-              <div className="text-gray-400">LP Fees</div>
+              <div className="text-4xl font-bold gradient-text mb-2">0.5%</div>
+              <div className="text-gray-400">Trading Fees</div>
             </div>
             <div>
-              <div className="text-4xl font-bold gradient-text mb-2">50%</div>
-              <div className="text-gray-400">LP Pool after 1 year</div>
+              <div className="text-4xl font-bold gradient-text mb-2">8%</div>
+              <div className="text-gray-400">Staking APY</div>
             </div>
             <div>
-              <div className="text-4xl font-bold gradient-text mb-2">0% - 80%</div>
-              <div className="text-gray-400">Vested token supply</div>
+              <div className="text-4xl font-bold gradient-text mb-2">15%</div>
+              <div className="text-gray-400">Platform Revenue Share</div>
             </div>
           </div>
         </div>
@@ -188,10 +188,10 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2">
               <Zap className="h-6 w-6 text-chiliz-primary" />
-              <span className="text-lg font-semibold">Chiliz Studio</span>
+              <span className="text-lg font-semibold">Fandoms</span>
             </div>
             <div className="mt-4 md:mt-0 text-gray-400">
-              © 2024 Chiliz Studio. All rights reserved.
+              © 2025 Fandoms. All rights reserved.
             </div>
           </div>
         </div>
